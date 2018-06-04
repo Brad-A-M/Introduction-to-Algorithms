@@ -8,3 +8,78 @@ for(j in 2:length(x)){n=x[j]; i=j-1; while(i>0 && x[i]>n){x[i+1]=x[i]; i=i-1; x[
 R<-c(2,3,5,6,8,Inf);L<-c(1,4,7,8,9,Inf); n=length(L)+length(R)-1;i=1;j=1;for(k in 1:n){if(L[i]<=R[j]){print(L[i]);i=i+1}
 else{print(R[j]);j=j+1}}
 
+#Take a list of length 2^n and sort it in O(nlg(n)) time!
+
+x<-floor(runif(16,min=0, max=101));#gernerate a random list of 16 integers
+m=length(x);
+
+
+#merge from x sorted lists of length 2
+for(t in seq(1,m,2)){
+  R<-c(x[t],Inf);L<-c(x[t+1],Inf);
+  S<-c();
+  
+  n=length(L)+length(R)-1;i=1;j=1;
+  
+  for(k in 1:n){
+    if(L[i]<=R[j]){S<-c(S,L[i]);i=i+1}
+    else{S<-c(S,R[j]);j=j+1}}
+  
+  assign(paste("S1", t, sep = ""), S[c(1,2)])
+  
+}
+#makes new list with each adjacent tuple sorted
+x1<-c();
+for(y in seq(1,m,2)){
+  x1<-c(x1,get(paste("S1", y, sep ="")))
+}
+
+
+print(x)
+print(x1)
+
+#Now go by powers of 2 (v)
+for(v in 1:4){
+  
+  p=2^v;
+  
+  #Merge the lists
+  
+  for(f in 0:(m/p)){
+    assign(paste("L", f, sep = ""), x1[c((p*f+1):(p+p*f))])
+  }
+  
+  for(b in seq(0,((m/p)-1),2)){
+    R<-c(get(paste("L", b, sep ="")),Inf);
+    L<-c(get(paste("L",(b+1), sep ="")),Inf);
+    S<-c();
+    
+    n=length(L)+length(R)-1;i=1;j=1;
+    
+    for(k in 1:n){
+      if(L[i]<=R[j]){S<-c(S,L[i]);i=i+1}
+      else{S<-c(S,R[j]);j=j+1}}
+    
+    
+    
+    assign(paste("S2", b, sep = ""), S[c(1:(2*p))])
+    
+    
+    
+  }
+  
+  #Make a new list with more sorting
+  
+  assign(paste("D",v,sep=""),c());
+  
+  for(y in seq(0,((m/p)-2),2)){
+    assign(paste("D",v,sep=""),c(get(paste("D",v,sep="")),get(paste("S2", y, sep =""))))
+  }
+  
+}
+#print em out
+print(x)
+print(x1)
+print(D2)
+print(D3)
+print(D4)
