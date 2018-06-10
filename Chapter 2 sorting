@@ -120,3 +120,26 @@ return(m[(p+1),1:length(x)])
 print(mergesort(x))
 print(x)
 #End better version
+
+
+#merge sort a vector of any length by appending 0's if needed.
+
+
+mergesortanylength<-function(x){
+  
+  p=log(length(x),2);
+
+if(p==floor(p)){return(mergesort(x))} else{
+  
+  r<-2^(floor(p)+1)-length(x);
+
+  a<- array(0,c(1,r));
+  t<- c(a,x);
+  w<-mergesort(t);
+  b<-w[c((r+1):length(t))];
+  return(b)
+  
+}
+
+}
+#end of merge sort any length
