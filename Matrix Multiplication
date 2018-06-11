@@ -1,0 +1,38 @@
+#Naive matrix multiplication in O(n^3).
+A <- array(1:9, c(3,3))
+B <- array(10:19, c(3,3))
+C <- array(,c(3,3))
+
+n=3;
+
+dotproduct<-function(x,y){
+  
+  c=0;
+  
+  for(i in 1:length(x)){
+    
+    c=x[i]*y[i]+c
+    
+  }
+  
+  return(c)
+  
+}#end dotproduct function
+
+NaiveMult<-function(A,B){
+
+for(i in 1:n){
+  
+  for(j in 1:n){
+    
+    C[i,j]=dotproduct(A[i,1:n],B[1:n,j])
+    
+  }
+  
+}
+  return(C)
+}
+
+print(A)
+print(B)
+print(NaiveMult(A,B))
