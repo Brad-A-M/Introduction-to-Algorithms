@@ -1,0 +1,58 @@
+#Find the closest pair in O(n^2)
+
+A<-sample(1:8,8,replace=F); #Generates 1,2,,,,n in arbitrary order
+n=length(A);
+r=((n*(n-2)/8));
+
+
+m <- array(, c(r,5));
+
+#turns A into length(A)/2 tuples
+for(i in seq(1,length(A),2)){
+  assign(paste("P", ((i+1)/2), sep = ""), c(A[i],A[i+1]))
+  
+}
+
+
+d<-function(P,Q){
+  
+  d=((P[1]-Q[1])^2+(P[2]-Q[2])^2)^.5
+  
+  return(d)
+}
+
+k=1;
+u=Inf;#Keep track of the minimum
+w=Inf;#Keep track of the row with the minimum distance
+
+#computes the pairwise distance
+for(i in 1:(((length(A))/2)-1)){
+  
+  for(j in (i+1):(length(A)/2)){
+    
+    
+    m[k,1]=get(paste("P",i,sep=""))[1]; m[k,2]=get(paste("P",i,sep=""))[2];
+    m[k,3]=get(paste("P",j,sep=""))[1]; m[k,4]=get(paste("P",j,sep=""))[2];
+    m[k,5]=d(get(paste("P",i,sep="")),get(paste("P",j,sep="")));
+    
+    
+    if(d(get(paste("P",i,sep="")),get(paste("P",j,sep="")))< u){
+      u = d(get(paste("P",i,sep="")),get(paste("P",j,sep="")));#keep track of the min and the row it is in
+    w=k};
+    
+    k=k+1;  
+    
+  }
+  
+  
+}
+print(A)
+
+print(m)
+
+
+print(w)
+print(u)
+print(m[w,1:4])
+
+######################################################################
