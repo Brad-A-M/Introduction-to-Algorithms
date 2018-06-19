@@ -1,0 +1,101 @@
+#Input three points to make a triangle
+p1<-c(2,5); p2<-c(1,0); p3<-c(0,1);
+
+
+
+
+dotproduct<-function(x,y){
+  
+  c=0;
+  
+  for(i in 1:length(x)){
+    
+    c=x[i]*y[i]+c
+    
+  }
+  
+  return(c)
+  
+}
+
+norm<-function(v){
+  
+  b=0;
+  
+  for(i in 1:length(v)){
+    
+    b=v[i]*v[i]+b
+    
+  }
+
+  return(sqrt(b))
+  
+}
+
+
+
+a1<-acos((dotproduct((p3-p1),(p2-p1))/(norm(p3-p1)*norm(p2-p1))));
+a2<-acos((dotproduct((p3-p2),(p1-p2))/(norm(p3-p2)*norm(p1-p2))));
+a3<-acos((dotproduct((p1-p3),(p2-p3))/(norm(p1-p3)*norm(p2-p3))));
+
+print(min(a1,a2,a3)*180/pi)
+print(max(a1,a2,a3)*180/pi)
+
+
+#finds the minimum edge length of a triangle
+lmin<-function(p1,p2,p3){
+  
+  min(norm(p1-p2),norm(p1-p3),norm(p2-p3))
+  
+}
+
+
+
+
+#finds the circumradius of three proints in the plane
+circumradius<-function(p1,p2,p3){
+  
+  m1<-c((p1[1]+p2[1])/2,(p1[2]+p2[2])/2);#find midpoints
+  m2<-c((p1[1]+p3[1])/2,(p1[2]+p3[2])/2);
+  
+  s1<-c(-1/((p1[2]-p2[2])/(p1[1]-p2[1])));#find opp recip of line containing two points
+  s2<-c(-1/((p1[2]-p3[2])/(p1[1]-p3[1])));
+  
+  if(s1==Inf){x<-c(m1[1]);
+  b2<-c(-s2*m2[1]+m2[2]);
+  y<-c(s2*x+b2)
+  r<-c(sqrt((p1[1]-x)^2+(p1[2]-y)^2));
+  }
+  else if(s2==Inf){
+    
+    x<-c(m2[1]);
+    b1<-c(-s1*m1[1]+m1[2]);
+    y<-c(s1*x+b1)
+    r<-c(sqrt((p1[1]-x)^2+(p1[2]-y)^2));
+  }
+  else{
+    b1<-c(-s1*m1[1]+m1[2]);
+    b2<-c(-s2*m2[1]+m2[2]);
+    x<-c((b2-b1)/(s1-s2));
+    y<-c(s1*x+b1);
+    r<-c(sqrt((p1[1]-x)^2+(p1[2]-y)^2));
+    
+    
+  }
+  
+  return(r)
+  
+  
+}
+
+#combine the two funtions to find the ratio
+radiusedgeratio<-function(p1,p2,p3){
+  
+  t=circumradius(p1,p2,p3)/lmin(p1,p2,p3);
+  
+  return(t)
+  
+  
+}
+
+print(radiusedgeratio(p1,p2,p3))
