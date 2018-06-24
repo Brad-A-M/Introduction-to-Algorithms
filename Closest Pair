@@ -186,5 +186,30 @@ print(A)
 print(sortbyx(A))
 print(sortbyy(A))
 
-###################################################33
+######################################################
+
+#addzeros function amends zeros the beginning of an array unit the 
+#length of the array is a power of 2.
+addzeros<-function(A){
+  
+  n=length(A);
+  p=log(n,2);
+  
+
+  
+  while(p != floor(p)){
+    
+    A<-c(0,A);
+    n=length(A);
+    p=log(n,2);
+  
+  }
+  
+  return(A)
+  
+  
+}#endaddzeros
+
+
+#####################################################
 
