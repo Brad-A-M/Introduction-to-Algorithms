@@ -213,3 +213,41 @@ addzeros<-function(A){
 
 #####################################################
 
+#sort any even length array by the y values by appending zeros to the front then sorting using above
+
+##############################################################
+#addzeros function amends zeros the beginning of an array unit the 
+#length of the array is a power of 2.
+addzeros<-function(A){
+  
+  n=length(A);
+  p=log(n,2);
+  z=0;
+  
+  
+  while(p != floor(p)){
+    
+    A<-c(0,A);
+    n=length(A);
+    p=log(n,2);
+    z=z+1;
+  }
+  
+  A<-c(z,A)
+  
+  return(A)
+  
+  
+}#endaddzeros
+
+sortanylengthy<-function(A){
+  
+  B=addzeros(A);
+  z=B[1];
+  C=sortbyy(B[2:length(B)]);
+  return(C[(z+1):length(C)])
+  
+}#endsortanylengthy
+
+################################################################################################
+
