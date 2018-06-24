@@ -56,3 +56,135 @@ print(u)
 print(m[w,1:4])
 
 ######################################################################
+
+#Enter an array think of it at [(x1,y1),(x2,y2),...,(xn,yn)] the functions sortbyx(A) and
+#sortybyy(A) do what you think they would do in O(nlog(n)).
+
+A<-sample(1:16,16,replace=F); #Generates 1,2,,,,n in arbitrary order
+
+
+#Sort by x
+sortbyx<-function(A){
+
+
+n=length(A);
+r=((n*(n-2)/8));
+p=log(length(A),2);
+g <- array(, c(p,n));#g for garage for storage
+
+
+#Input two sorted lists and out puts the merged sorted list by two
+mergebytwox<-function(L,R){
+  
+  L<-c(L,Inf);
+  R<-c(R,Inf);
+  
+  S<-c();
+  n=(length(R)+length(L))/2-1;i=1;j=1;#messing with minus here
+  
+  for(k in 1:(n)){#messing with minus here
+    if(L[i] <= R[j]){
+      S<-c(S,L[i],L[i+1])
+      i=i+2
+    } else {
+      S<-c(S,R[j],R[j+1])
+      j=j+2
+    }
+    k=k+1;
+  }
+  
+  S<-S[c(1:(length(S)))]
+  
+  return(S)
+  
+}#endmergebytwox
+
+#assign row one to be values of array
+for(i in 1:length(A)){
+  g[1,i]<-A[i];
+}
+
+
+
+for(k in 2:p){
+
+  for(i in seq(1,length(A),2^k)){
+  
+  g[k,i:(i+2^k-1)]<-c(mergebytwox(g[(k-1),i:(i+2^(k-1)-1)],g[(k-1),(i+2^(k-1)):(i+2^k-1)]));
+  }
+  
+  
+}
+return(g[p,1:length(A)])
+
+}#end merge by x
+
+print(A)
+print(sortbyx(A))
+
+#sort by y
+
+A<-sample(1:16,16,replace=F); #Generates 1,2,,,,n in arbitrary order
+
+
+
+sortbyy<-function(A){
+
+n=length(A);
+r=((n*(n-2)/8));
+p=log(length(A),2);
+g <- array(, c(p,n));#g for garage for storage
+
+
+#Input two sorted lists and out puts the merged sorted list by two
+mergebytwoy<-function(L,R){
+  
+  L<-c(L,Inf,Inf);
+  R<-c(R,Inf,Inf);
+  
+  S<-c();
+  n=(length(R)+length(L))/2-1;i=2;j=2;#messing with minus here
+  
+  for(k in 1:(n)){#messing with minus here
+    if(L[i] <= R[j]){
+      S<-c(S,L[i-1],L[i])
+      i=i+2
+    } else {
+      S<-c(S,R[j-1],R[j])
+      j=j+2
+    }
+    k=k+1;
+  }
+  
+  S<-S[c(1:(length(S)-2))]
+  
+  return(S)
+  
+}#endmergebytwoy
+
+#assign row one to be values of array
+for(i in 1:length(A)){
+  g[1,i]<-A[i];
+}
+
+
+
+for(k in 2:p){
+  
+  for(i in seq(1,length(A),2^k)){
+    
+    g[k,i:(i+2^k-1)]<-c(mergebytwoy(g[(k-1),i:(i+2^(k-1)-1)],g[(k-1),(i+2^(k-1)):(i+2^k-1)]));
+  }
+  
+  
+}
+
+return(g[p,1:length(A)])
+
+}
+print(A)
+print(sortbyx(A))
+print(sortbyy(A))
+
+###################################################33
+
