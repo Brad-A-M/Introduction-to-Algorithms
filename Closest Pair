@@ -251,3 +251,115 @@ sortanylengthy<-function(A){
 
 ################################################################################################
 
+6/29 starting to put things together below here
+################################################################################################
+
+A<-sample(1:16,16,replace=F); #Generates 1,2,,,,n in arbitrary order
+n=length(A);
+
+B=sortbyx(A);
+
+
+
+l=(B[(n/2)-1]+B[(n/2)+1])/2;#find x coordinate of midline
+
+
+m=3; #stand in for min distance so far
+
+
+#Gives us the strip of points with x distance to l less than m.
+strip<-function(A){
+  
+  B=sortbyx(A);
+  
+  l=(B[(n/2)-1]+B[(n/2)+1])/2;#find x coordinate of midline
+  
+  S<-c();
+  
+  for(i in seq(1,length(B),2)){
+    
+    if(abs(B[i]-l)<=m){
+      
+      S<-c(S,B[i],B[i+1])
+      
+    }
+    
+  }
+  return(S)
+  
+}
+
+C=strip(A)
+print(A)
+print(B)
+print(l)
+print(C)
+
+print(sortanylengthy(L(C)))
+print(sortanylengthy(R(C)))
+
+print(d(C[1],C[2],C[3],C[4]))
+
+L<-function(C){
+  
+  S<-c();
+  for(i in seq(1,length(C),2)){
+    if(C[i]<l){S<-c(S,C[i],C[i+1])
+    
+    }
+    
+  }
+  
+  return(S)
+}
+
+R<-function(C){
+  
+  S<-c();
+  for(i in seq(1,length(C),2)){
+    if(C[i]>l){S<-c(S,C[i],C[i+1])
+    
+    }
+    
+  }
+  
+  return(S)
+}
+
+mininstrip<-function(C){
+  
+  m=Inf;
+  
+  for(i in 1:min(7,(length(C)/2))){
+    
+    t=d()
+    
+  }
+  
+  
+  
+  return(m)
+}
+
+
+
+#####################################################################
+
+#turns A into length(A)/2 tuples
+for(i in seq(1,length(A),2)){
+assign(paste("P", ((i+1)/2), sep = ""), c(A[i],A[i+1]))
+  
+}
+
+
+
+#d(P1,P2) findes Euclidean distance.
+d<-function(a,b,c,d){
+  
+  d=((a-c)^2+(b-d)^2)^.5
+  
+  return(d)
+}
+######################################################################################
+
+
