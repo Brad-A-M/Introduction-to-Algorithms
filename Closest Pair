@@ -360,3 +360,48 @@ d<-function(a,b,c,d){
 }
 ###############################################################################################
 
+#find the closet distance from a point to a list of points R 
+
+
+#given a point and an array of points ptoR finds the minimum distance from p to points in R
+ptoR<-function(p,R){
+  
+  R=sortanylengthy(R); 
+  
+  k=0;#find the position of p in the list R
+  h=0;
+  
+  for(i in seq(2,length(R),2)){
+    
+    
+    
+    if(R[i]<=p[2]){k=k+1;}
+    
+    if(R[i]>=p[2]){h=h+1;}
+    
+  }
+  
+  l=min(k,10);#how far do we have to look to the left?
+  r=min((length(R)/2)-k,10);#how far do we have to look to the right?
+  
+  B=R[(2*k-2*l+1):(2*k+2*r)]; #take subset of R to compute the distance to p
+  
+  
+  
+  for(i in seq(1,length(B),2)){
+    
+    
+    
+    if(d(p[1],p[2],B[i],B[i+1])<m){
+      m=d(p[1],p[2],B[i],B[i+1]);
+    }
+    
+    
+    
+  }
+  
+  return(m)
+  
+}#end min p to R
+##############################################################
+
