@@ -1,3 +1,185 @@
+#This series of functions find the minimum distance between points in the plane
+#in O(nlog(n)) time!!!!!
+
+A<-sample(1:16,16,replace=F); #Generates 1,2,,,,n in arbitrary order
+
+##############################################################################
+#The function
+##############################################################################
+mindistance<-function(A){
+  n=length(A);
+  B=sortbyx(A);p=log(n,2);
+  g <- array(, c(p,n));#g for garage for storage
+  
+  
+  #assign row one to be values of array
+  for(i in 1:n){
+    g[1,i]<-B[i];
+  }
+  #finds the distance between p1,p2 and p3,p4 etc.
+  for(i in seq(1,n,4)){
+    g[2,i]<-d(g[1,i],g[1,(i+1)],g[1,(i+2)],g[1,(i+3)])
+    
+  }
+  #calls the minsplit function as many times as needed
+  for(k in 2:(p-1)){
+    
+    for(i in seq(1,n,2^(k+1))){
+      g[(k+1),i]<-minsplit(g[1,i:(i+2^k-1)],g[k,i],g[1,(2^k+i):(2^(k+1)+i-1)],g[k,(2^k+i)])
+      
+      
+    }
+    
+  }
+  return(g[p,1])
+  
+}#endmindistance
+
+
+##################################################################
+#Many sub functions#
+
+#d(P1,P2) findes Euclidean distance.
+d<-function(a,b,c,d){
+  
+  d=((a-c)^2+(b-d)^2)^.5
+  
+  return(d)
+}#end distance
+
+
+
+#######################################################################
+#sorts by [(x1,y1),(x2,y2)...] by the y
+sortbyy<-function(A){
+  
+  n=length(A);
+  
+  z <- array(, c((n/2),4));#z for zarage for storage
+  
+  for(i in seq(1,n,2)){z[((i+1)/2),1]=A[i];z[((i+1)/2),2]=A[i+1]};
+  
+  v<-rank(z[1:(n/2),2]);
+  
+  for(i in 1:(n/2)){
+    
+    z[v[i],4]=z[i,2]
+    z[v[i],3]=z[i,1]
+    
+  }
+  
+  h<-c();
+  for(i in 1:(n/2)){h<-c(h,z[i,3],z[i,4])}
+  return(h)
+}#end sortbyy
+
+#sorts by [(x1,y1),(x2,y2)...] by the x
+sortbyx<-function(A){
+  
+  n=length(A);
+  
+  z <- array(, c((n/2),4));#z for zarage for storage
+  
+  for(i in seq(1,n,2)){z[((i+1)/2),1]=A[i];z[((i+1)/2),2]=A[i+1]};
+  
+  v<-rank(z[1:(n/2),1]);
+  
+  for(i in 1:(n/2)){
+    
+    z[v[i],4]=z[i,2]
+    z[v[i],3]=z[i,1]
+    
+  }
+  
+  h<-c();
+  for(i in 1:(n/2)){h<-c(h,z[i,3],z[i,4])}
+  return(h)
+}#end sortbyx
+
+###################################################################
+
+#given a point and an array of points ptoR finds the minimum distance from p to points in R
+#also takes a subset of 5 (or min) on the left and right
+ptoR<-function(p,R){
+  
+  R=sortanylengthy(R); 
+  
+  k=0;#find the position of p in the list R
+  h=0;
+  
+  for(i in seq(2,length(R),2)){
+    
+    
+    
+    if(R[i]<=p[2]){k=k+1;}
+    
+    if(R[i]>=p[2]){h=h+1;}
+    
+  }
+  
+  l=min(k,5);#how far do we have to look to the left?
+  r=min((length(R)/2)-k,5);#how far do we have to look to the right?
+  
+  B=R[(2*k-2*l+1):(2*k+2*r)]; #take subset of R to compute the distance to p
+  
+  
+  
+  for(i in seq(1,length(B),2)){
+    
+    
+    
+    if(d(p[1],p[2],B[i],B[i+1])<m){
+      m=d(p[1],p[2],B[i],B[i+1]);
+    }
+    
+    
+    
+  }
+  
+  return(m)
+  
+}
+###########################################################################
+
+#Define the function input two arrays sorted by x and returns minimum distance.
+minsplit<-function(L,l,R,r){
+  x=(L[length(L)-1]+R[1])/2;
+  
+  m=min(l,r);
+  #make LS the left part of the critial strip
+  LS<-c();
+  for(i in seq(1,length(L),2)){
+    if(L[i]>(x-m)){LS<-c(LS,L[i],L[i+1])}
+    
+    
+  }
+  #make RS the right part of the critial strip
+  RS<-c();
+  for(i in seq(1,length(R),2)){
+    if(R[i]<(x+m)){RS<-c(RS,R[i],R[i+1])}
+  }
+  
+  RSS<-sortbyy(RS)
+  
+  if(length(RS)==0|length(LS)==0){return(m)}
+  else{
+    
+    for(i in seq(1,length(LS),2)){
+      q<-c(LS[i],LS[i+1]);
+      
+      
+      if(ptoR(q,RSS)<m){m=ptoR(q,RSS)};
+      
+    }
+    return(m)
+  }
+  
+}#endminsplit
+
+#Above here is all we need
+##############################################################
+
+
 #Find the closest pair in O(n^2)
 
 A<-sample(1:8,8,replace=F); #Generates 1,2,,,,n in arbitrary order
@@ -54,7 +236,9 @@ print(m)
 print(w)
 print(u)
 print(m[w,1:4])
-
+####################################################################
+#Everything below here is questionable#
+###################################################################
 ######################################################################
 
 #Enter an array think of it at [(x1,y1),(x2,y2),...,(xn,yn)] the functions sortbyx(A) and
