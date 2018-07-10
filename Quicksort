@@ -1,0 +1,41 @@
+#attempt 1 the program is currently not updating A in the function partition
+
+A<-sample(1:16,16,replace=F); #Generates 1,2,,,,n in arbitrary order
+n=length(A);
+print(A)
+
+partition2 <- function(A,l,r){
+  if(length(A)==1){return(A)}else{
+    p=A[r];
+    
+    i=l;
+    for(j in (l):(r-1)){
+      
+      if(A[j]<=p){t=A[i];
+      A[i]=A[j]; A[j]=t;
+      i=i+1;}
+      
+      else{}
+      
+    }
+    b=A[i];
+    A[i]=A[r];
+    A[r]=b;
+    
+    return(i)
+    
+  }
+} 
+  print(partition2(A,1,16))
+  print(A)
+  quicksort<-function(A,l,r){
+    if(l<r){
+      q=partition2(A,l,r)
+      quicksort(A,l,(q-1));
+      quicksort(A,(q+1),r);
+    }
+    return(A)
+    
+  }#endquicksort
+print(quicksort(A,1,16))
+print(A)  
