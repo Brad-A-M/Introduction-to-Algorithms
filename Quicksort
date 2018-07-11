@@ -1,3 +1,32 @@
+#quicksort and a recursive function calls
+
+
+qs <- function(A) {
+  
+  if(length(A) > 1) {
+    
+    p <- A[1]
+    
+    l <- qs(A[A < p])
+    m <- p
+    h <- qs(A[A > p])
+    
+    return{c(l, m, h)}
+    
+    
+  }
+  
+  else {return(A)}
+  
+}
+print(qs(A))
+print(A)
+
+
+
+
+
+#####################################################################################
 #attempt 1 the program is currently not updating A in the function partition
 
 A<-sample(1:16,16,replace=F); #Generates 1,2,,,,n in arbitrary order
@@ -40,22 +69,3 @@ partition2 <- function(A,l,r){
 print(quicksort(A,1,16))
 print(A)  
 
-#stolen online need to understand
-qs <- function(vec) {
-  
-  if(length(vec) > 1) {
-    
-    pivot <- vec[1]
-    
-    low <- qs(vec[vec < pivot])
-    mid <- vec[vec == pivot]
-    high <- qs(vec[vec > pivot])
-    
-    c(low, mid, high)
-    
-    
-  }
-  
-  else vec
-  
-}
