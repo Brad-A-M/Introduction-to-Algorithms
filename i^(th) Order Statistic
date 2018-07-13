@@ -1,0 +1,34 @@
+#Input an array A and an index i this functions returns
+#the i^(th) value of the array in 0(n) time!
+
+A<-sample(1:16,16,replace=F); #Generates 1,2,,,,n in arbitrary order
+n=length(A);
+print(A)
+
+#ith position in 0(n) time.
+
+position<-function(A,i){
+  
+  if(length(A) > 1) {
+    
+    p <- A[1]
+    
+    l <- A[A < p]
+    m <- p
+    h <- A[A > p]
+    
+    j=length(l)+1;
+    
+    if(j==i){p}
+    else if(j>i){position(l,i)}
+    else{position(h,(i-j))}
+    
+    
+  }
+  
+  else {A}
+  
+  
+}#endposition
+print(A)
+print(position(A,5))
