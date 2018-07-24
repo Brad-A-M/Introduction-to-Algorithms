@@ -1,0 +1,19 @@
+###########################################################
+#Finds the gcd of two positive integers
+#linear in the number of digits of n
+#can be thought of as constant time
+#might need to worry about mod
+###########################################################
+
+gcd<-function(a,b){
+  if(a==b){return(a)}
+  else if(a>b){gcd((a-b),b)}
+  else gcd(a,(b-a))
+  
+
+}
+
+A<-sample(1:100,2,replace=FALSE)
+
+print(A)
+print(gcd(A[1],A[2]))
