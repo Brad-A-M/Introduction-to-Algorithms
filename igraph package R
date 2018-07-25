@@ -1,0 +1,29 @@
+## Download and install the package
+install.packages("igraph")
+
+## Load package
+library(igraph)
+
+#makes a nice ring 
+g<-make_ring(9, directed = FALSE, mutual = FALSE, circular = TRUE)
+
+#makes a nice plot 
+ tkplot(g,  vertex.color="green")
+ 
+  # A simple undirected graph
+ q <- graph_from_literal( Alice-Bob-Cecil-Alice, Daniel-Cecil-Eugene,
+                          Cecil-Gordon )
+ tkplot(q)
+ 
+ #the ":" A--B:C:D edges AB AC and AD
+  q1<-graph_from_literal( A-- B:C:D,C--D,B--C )
+ tkplot(q1)
+ 
+ #not connected!
+  q2<-graph_from_literal( A-- B:C:D,E--G:H )
+ tkplot(q2)
+ 
+  ## Breath First Search 
+ bfs(q1, root=7, unreachable = FALSE,
+     order=TRUE, rank=TRUE, father=TRUE, pred=TRUE,
+     succ=TRUE, dist=TRUE)
