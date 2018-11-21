@@ -1,0 +1,278 @@
+/*
+ * Input an array of integers in ascending order
+    return two subarrays such that the difference between
+    the sum of each subset is as small as possible.
+ */
+package dynamic_tug_of_war;
+import java.io.*;
+import java.io.File; 
+import java.util.Scanner;
+import java.io.PrintWriter;
+import java.util.Arrays;
+/**
+ *
+ * @author bamcc
+ */
+public class Dynamic_tug_of_war {
+
+    public static int[] team1(int[] A){
+     //sum the array
+        int S=0;
+        for(int i=0;i<A.length;i++)
+        {S=S+A[i];
+        }
+        //the matrix
+        boolean [][] M=new boolean[(A.length+1)][(S+1)];
+        //initalize first column
+        for(int i=0;i<A.length+1;i++)
+        {M[i][0]=true;
+        }
+        //initalize first row
+        for(int i=1;i<S+1;i++)
+        {M[0][i]=false;
+        }
+         //fill er up
+        for(int i=1;i<A.length+1;i++){
+            for(int j=1;j<S+1;j++){
+            
+            if(M[i-1][j]==true){M[i][j]=true;}
+            if(A[i-1]<=j){ if(M[i-1][j-A[i-1]]==true){M[i][j]=true;}}
+            
+            }
+        
+        }
+        
+        //find the column nearest center that we have a subset sum of
+        //and the index
+        int d=-1;
+        int r=-1;
+        for(int i=S/2;i>=0;i--){
+            if(M[A.length][i]==true){d=S-i*2; r=i;break;}
+        }
+        
+        int k=0;
+        int[] B=new int[1];
+        int[] I=new int[1];
+        B[0]=r;
+        I[0]=-1;
+        while(M[k][r]==false){k=k+1;}
+        
+        
+         while(r>0){B=addStack(B,A[k-1]);I=addStack(I,k);r=r-A[k-1];k=0;
+            while(M[k][r]==false){k=k+1;}
+        }
+         
+          //team 1
+        int[] T1=new int[B.length-1];
+        for(int i=1;i<B.length;i++){T1[i-1]=B[i];}
+
+        return T1;
+    }
+    ///////////////////////////////////////////////////////////////////////////
+     //Given an array and a subarray this returns the complement.
+ public static int[] team2(int[] A,int[] T1){int[] T2=new int[A.length];
+        for(int i=0;i<A.length;i++){T2[i]=A[i];}
+        for(int i=0;i<A.length;i++){
+            boolean w=false;
+            for(int j=0;j<T1.length;j++){
+                if(A[i]==T1[j]){w=true;}
+                        
+            }
+            if(w==true){T2=kickout(T2,A[i]);}
+        }
+        return T2;
+ }
+ /////////////////////////////////////////////////////////////////////////////////////
+    //inputs an array and integer
+    //if the integer is in the array kick it out
+    //return the array minus the element.
+    public static int[] kickout(int[] a, int c){
+    int[] b= new int[a.length-1];
+    int d=0;
+    for(int i=0;i<a.length;i++){
+        if(a[i]!=c){d=d+1;}
+        else{break;}
+    
+    }
+    for(int i=0;i<d;i++){b[i]=a[i];}
+    for(int i=d+1;i<a.length;i++){b[i-1]=a[i];}
+    return b;
+    }
+    //adds a value to the top of an array 
+ //even if the value is already there, add it!
+    public static int[] addStack(int[] a, int c){
+        
+       
+    
+    int[] b= new int[a.length+1];
+    
+    for(int i=0;i<a.length;i++){
+        
+        
+        b[i]=a[i];
+        
+        }
+                
+        b[a.length]=c;
+    
+    
+    return b;
+        
+       
+    }
+    //printarray
+    public static void printArray(int[] array)
+    {
+        int n = array.length;
+        for (int i=0; i<n; i++)
+            System.out.print(array[i]+" ");
+            System.out.println();
+    }
+     
+      public static void print2dArray(boolean[][] array)
+    {
+        int n = array.length;
+        int m =array[0].length;
+        
+        for (int i=0; i<n; i++){
+            for(int j=0;j<m;j++){
+            System.out.print(array[i][j]+" ");   
+        }
+        System.out.println();
+        }
+    }
+    public static void main(String[] args)throws Exception {
+        /*the dirty dirty
+        int[] A=new int[6];
+        A[0]=13;
+        A[1]=13;
+        A[2]=13;
+        A[3]=13;
+        A[4]=13;
+        A[5]=65;
+        
+        printArray(A);
+        
+        
+        int S=0;
+        for(int i=0;i<A.length;i++)
+        {S=S+A[i];
+        }
+        System.out.println(S);
+        
+        boolean [][] M=new boolean[(A.length+1)][(S+1)];
+        //initalize first column
+        for(int i=0;i<A.length+1;i++)
+        {M[i][0]=true;
+        }
+        //initalize first row
+        for(int i=1;i<S+1;i++)
+        {M[0][i]=false;
+        }
+        
+        
+        print2dArray(M);
+        System.out.println(S);
+        //fill er up
+        for(int i=1;i<A.length+1;i++){
+            for(int j=1;j<S+1;j++){
+            
+            if(M[i-1][j]==true){M[i][j]=true;}
+            if(A[i-1]<=j){ if(M[i-1][j-A[i-1]]==true){M[i][j]=true;}}
+            
+            }
+        
+        }
+        print2dArray(M);
+        //find the column nearest center that we have a subset of
+        int d=-1;
+        int r=-1;
+        for(int i=S/2;i>=0;i--){
+            if(M[A.length][i]==true){d=S-i*2; r=i;break;}
+        }
+        
+        System.out.println(d);
+        System.out.println(r);
+        
+        int k=0;
+        int[] B=new int[1];
+        int[] I=new int[1];
+        B[0]=r;
+        I[0]=-1;
+        while(M[k][r]==false){k=k+1;}
+        System.out.println(k);
+        System.out.println(A[k-1]);
+        
+        //This is where you are
+        //should work now!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        while(r>0){B=addStack(B,A[k-1]);I=addStack(I,k);r=r-A[k-1];k=0;
+            while(M[k][r]==false){k=k+1;}
+        }
+       
+        printArray(B);
+        printArray(I);
+        
+        //team 1
+        int[] T1=new int[B.length-1];
+        for(int i=1;i<B.length;i++){T1[i-1]=B[i];}
+        printArray(T1);
+        //find team 2
+        
+        //read through A and kickout T1
+        int[] T2=new int[A.length];
+        for(int i=0;i<A.length;i++){T2[i]=A[i];}
+        for(int i=0;i<A.length;i++){
+            boolean w=false;
+            for(int j=0;j<T1.length;j++){
+                if(A[i]==T1[j]){w=true;}
+                        
+            }
+            if(w==true){T2=kickout(T2,A[i]);}
+        }
+        
+        
+       
+        printArray(team1(A));
+        printArray(team2(A,T1));
+        System.out.println(d);
+*/
+        //////////////////////////////////////////////
+        //read in time
+        int numberChildren=0;
+        int maxWeight=0;
+        int d=0;
+       
+        
+         File file1 = 
+      new File("C:\\Users\\bamcc\\Desktop\\232\\Lab 4\\tug.txt");
+        Scanner in = new Scanner(file1);
+        PrintWriter out = new PrintWriter(new File("teams.txt"));
+        
+        //while(in.has next) here
+        while(in.hasNext()){
+            numberChildren=in.nextInt();
+            maxWeight=in.nextInt();
+            int[] weights=new int[1];
+            weights[0]=0;
+            for(int i=0;i<numberChildren;i++){weights=addStack(weights,in.nextInt());}     
+       
+            int[] w=new int[weights.length-1];
+            for(int i=1;i<weights.length;i++){w[i-1]=weights[i];}
+       
+            int[] V1=new int[team1(w).length];
+            int[] V2=new int[team1(w).length-V1.length];
+            V1=team1(w);
+       
+            V2=team2(w,V1);
+            
+            d=Math.abs(Arrays.stream(V1).sum()-Arrays.stream(V2).sum());
+        
+            out.println("Team 1: " +Arrays.toString(V1) + " Team 2: "+ Arrays.toString(V2)+" the difference is "+ d);
+        }
+        out.close();
+        
+        
+    }
+    
+    
+}
